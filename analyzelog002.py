@@ -30,7 +30,7 @@ def trim_str_after(x):
 
 def get_log_list(path_log, str_date):
     path_search = "{}haproxy.log.2_{}*.gz".format(path_log, str_date)
-    list_log = glob(path_search)
+    list_log = sorted(glob(path_search))
     printlog("len(list_log):{}".format(len(list_log)))
     return list_log
 
@@ -42,7 +42,10 @@ def list_to_dataframe(list_log):
                  'method', 'Request', 'HTTP method'])
 
     # 読み取ったファイル分回す
+    # cnt = 0
     for path_log in list_log:
+        # if cnt > 2:
+        #     break
         print(path_log)
         df_log_new002 = pd.read_csv(
             path_log,
@@ -66,10 +69,15 @@ def list_to_dataframe(list_log):
         print("len(df_log_new002):{}".format(len(df_log_new002)))
         df_log_new001 = pd.concat([df_log_new001, df_log_new002])
 
+        # 日付でソートする
+        df_log_new001.sort_values(by="Accept date", ascending=True, inplace=True)
+        df_log_new001.reset_index(drop=True, inplace=True)
+
         # 重複を排除する
         print("len(df_log_new001):{}".format(len(df_log_new001)))
         df_log_new001.drop_duplicates(inplace=True)
         print("len(df_log_new001):{}".format(len(df_log_new001)))
+        # cnt += 1
 
     return df_log_new001
 
@@ -95,6 +103,7 @@ def append_dataframe(df_log01, df_log02):
 
     # 取得したログを結合する
     df_log_today = pd.concat([df_log_today, df_log_new])
+    # 日付でソートする
     df_log_today.sort_values(by="Accept date", ascending=True, inplace=True)
     df_log_today.reset_index(drop=True, inplace=True)
 
