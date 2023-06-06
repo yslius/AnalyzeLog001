@@ -46,7 +46,11 @@ def list_to_dataframe(list_log):
     for path_log in list_log:
         # if cnt > 2:
         #     break
-        print(path_log)
+        print("Path:{}".format(path_log))
+        size_file = os.path.getsize(path_log)
+        print("size_file:{}".format(size_file))
+        if size_file == 0:
+            continue
         df_log_new002 = pd.read_csv(
             path_log,
             # sep=r'¥s(?=(:[^"]*"[^"]*")*[^*]*$)(?![^¥[]*¥])',
@@ -64,6 +68,7 @@ def list_to_dataframe(list_log):
                 'method': trim_str_before,
                 'HTTP method': trim_str_after
             },
+            skiprows=1
         )
         # 読み取ったログに結合する
         print("len(df_log_new002):{}".format(len(df_log_new002)))
@@ -117,7 +122,7 @@ def append_dataframe(df_log01, df_log02):
 
 if __name__ == '__main__':
     str_date = datetime.now().strftime("%Y%m%d")
-    str_date = "20230603"
+    str_date = "20230604"
 
     # ログのリストを取得する
     list_log01 = get_log_list("{}file/ico-coin-lb01/".format(config.PATH_PROJECT), str_date)
