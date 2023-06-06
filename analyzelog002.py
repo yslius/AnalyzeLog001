@@ -120,8 +120,8 @@ if __name__ == '__main__':
     str_date = "20230603"
 
     # ログのリストを取得する
-    list_log01 = get_log_list("{}/file/ico-coin-lb01/".format(config.PATH_PROJECT), str_date)
-    list_log02 = get_log_list("{}/file/ico-coin-lb02/".format(config.PATH_PROJECT), str_date)
+    list_log01 = get_log_list("{}file/ico-coin-lb01/".format(config.PATH_PROJECT), str_date)
+    list_log02 = get_log_list("{}file/ico-coin-lb02/".format(config.PATH_PROJECT), str_date)
 
     # リストからデータフレームにする
     df_log01 = list_to_dataframe(list_log01)
