@@ -146,23 +146,29 @@ def append_dataframe(df_log01, df_log02):
 
 
 if __name__ == '__main__':
-    str_date = datetime.now().strftime("%Y%m%d")
+    # 過去のログをループさせる
+    list_str_date = ["20230919", "20230920", "20230921", "20230922", "20230923", "20230924", "20230925"
+        , "20230926", "20230927", "20230928", "20230929", "20230930", "20231001", "20231002"
+        , "20231006", "20231007", "20231008", "20231009", "20231010", "20231011", "20231012", "20231013"]
 
-    # ログのリストを取得する
-    list_log01 = get_log_list("{}file/ico-coin-lb01/".format(config.PATH_PROJECT), str_date)
-    list_log02 = get_log_list("{}file/ico-coin-lb02/".format(config.PATH_PROJECT), str_date)
+    for str_date in list_str_date:
+        printlog("{} start".format(str_date))
+        # ログのリストを取得する
+        list_log01 = get_log_list("{}file/ico-coin-lb01/".format(config.PATH_PROJECT), str_date)
+        list_log02 = get_log_list("{}file/ico-coin-lb02/".format(config.PATH_PROJECT), str_date)
 
-    # リストからデータフレームにする
-    df_log01 = list_to_dataframe(list_log01)
-    df_log02 = list_to_dataframe(list_log02)
-    df_log01["server"] = "ico-coin-lb01"
-    df_log02["server"] = "ico-coin-lb02"
+        # リストからデータフレームにする
+        df_log01 = list_to_dataframe(list_log01)
+        df_log02 = list_to_dataframe(list_log02)
+        df_log01["server"] = "ico-coin-lb01"
+        df_log02["server"] = "ico-coin-lb02"
 
-    # 当日のデータフレームに結合する
-    df_log_today = append_dataframe(df_log01, df_log02)
+        # 当日のデータフレームに結合する
+        df_log_today = append_dataframe(df_log01, df_log02)
 
-    # 保存する
-    path_log_today = "{}dataframe/df_log_{}.pickle".format(config.PATH_PROJECT, str_date)
-    df_log_today.to_pickle(path_log_today)
-    printlog("to_pickle OK {}".format(path_log_today))
-    # df_log_today.to_csv("{}csv/log_haproxy_{}.csv".format(config.PATH_PROJECT, str_date), index=False)
+        # 保存する
+        path_log_today = "{}dataframe/df_log_{}.pickle".format(config.PATH_PROJECT, str_date)
+        df_log_today.to_pickle(path_log_today)
+        printlog("to_pickle OK {}".format(path_log_today))
+
+        printlog("{} end".format(str_date))
